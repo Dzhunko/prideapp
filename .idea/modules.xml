@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/prideapp.iml" filepath="$PROJECT_DIR$/prideapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/prideapp_android.iml" filepath="$PROJECT_DIR$/android/prideapp_android.iml" />
+    </modules>
+  </component>
+</project>
