@@ -8,7 +8,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatefulWidget {
   @override
     State<StatefulWidget> createState() {
-      // TODO: implement createState
+      
       return MyAppState();
     }
 }
@@ -32,7 +32,7 @@ class MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
-          title: Text('Pride'),
+          title: Text('Pride App'),
           backgroundColor: Colors.white,
           ),
         body:  _pageOptions[_selectedPage],
