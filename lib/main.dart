@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import './today.dart';
 import './month.dart';
 import './settings.dart';
+import 'package:date_utils/date_utils.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-void main() => runApp(MyApp());
+
+void main(){
+  initializeDateFormatting().then((_)=> runApp(MyApp()));
+} 
 
 class MyApp extends StatefulWidget {
   @override
@@ -30,7 +36,7 @@ class MyAppState extends State<MyApp> {
         primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
       ),
       home: Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Pride App'),
           backgroundColor: Colors.white,
