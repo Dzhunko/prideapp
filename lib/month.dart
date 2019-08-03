@@ -9,7 +9,11 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarPageState extends StatelessWidget {
   @override
   Widget build (BuildContext context){
-    return Container(
+    return Scaffold(appBar: AppBar(
+    title: Text('Month'),
+    backgroundColor: Colors.white
+    ),
+    body: Container(
       padding: EdgeInsets.all(25.0),
       child: TableCalendar(
         startingDayOfWeek: StartingDayOfWeek.monday,
@@ -18,6 +22,7 @@ class CalendarPageState extends StatelessWidget {
           todayColor: Colors.amber[800],
         ),
       ),
+    )
     );
   }
 }

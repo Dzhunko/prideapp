@@ -8,8 +8,11 @@ import 'package:table_calendar/table_calendar.dart';
 
 
 void main(){
+  new MaterialApp(debugShowCheckedModeBanner: false,);
   initializeDateFormatting().then((_)=> runApp(MyApp()));
+  
 } 
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -37,10 +40,6 @@ class MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('Pride App'),
-          backgroundColor: Colors.white,
-          ),
         body:  _pageOptions[_selectedPage],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedPage,
@@ -53,22 +52,26 @@ class MyAppState extends State<MyApp> {
           items: [
             BottomNavigationBarItem(
               icon: ImageIcon(new AssetImage('images/menu_icon/day.png')),
+              title: Container(height: 0.0)
               //icon: Icon(Icons.format_list_bulleted),
-              title: Container(height: 0.0),
+              
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(new AssetImage('images/menu_icon/calendar.png')),
-              title: Container(height: 0.0),
+              title: Container (height: 0.0)
             ),
             BottomNavigationBarItem(
               icon: ImageIcon(new AssetImage('images/menu_icon/settings.png')),
-              title: Container(height: 0.0),
+              title: Container(height: 0.0)
             ),
           ],
         ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: (){},
+          backgroundColor: Colors.black,
+          child: new Icon(Icons.add),
+          ),
       ),
     );
   }
 }
-
-
