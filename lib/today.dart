@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+class ToDayPage extends StatefulWidget {
+  @override
+  ToDayPageState createState() => ToDayPageState();
+}
 
-
-class ToDayPageState extends StatelessWidget {
+class ToDayPageState extends State<ToDayPage>{
   @override
   Widget build (BuildContext context){
     return Scaffold(appBar: AppBar(

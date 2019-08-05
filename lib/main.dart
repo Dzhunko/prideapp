@@ -25,7 +25,8 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   int _selectedPage = 0;
   final _pageOptions= [
-    ToDayPageState(),
+    //ToDayPageState(),
+    ToDayPage(),
     CalendarPageState(),
     SettingsPageState(),
   ];
@@ -33,7 +34,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pride',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
