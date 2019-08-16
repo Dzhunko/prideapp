@@ -18,7 +18,10 @@ environment:
 
 
 
-dependencies: 
+dependencies:
+  sqflite: ">=0.8.5"
+  path_provider: any 
+  intl: "^0.15.6" 
   flutter_calendar: ^0.0.8
   table_calendar: ^1.2.5
   flutter:
@@ -31,7 +34,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+    
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

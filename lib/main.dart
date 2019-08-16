@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './today.dart';
-import './month.dart';
-import './settings.dart';
+import './pages/today.dart';
+import './pages/month.dart';
+import './pages/settings.dart';
 import 'package:date_utils/date_utils.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -24,6 +24,11 @@ class MyApp extends StatefulWidget {
   
 class MyAppState extends State<MyApp> {
   int _selectedPage = 0;
+  final _pageTitle=[
+    'Today',
+    'Month',
+    'Settings',
+  ];
   final _pageOptions= [
     //ToDayPageState(),
     ToDayPage(),
@@ -40,6 +45,14 @@ class MyAppState extends State<MyApp> {
         primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
       ),
       home: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text(_pageTitle[_selectedPage]),
+          backgroundColor: Colors.white,
+        ),
+        drawer: Drawer(
+          child: ListView(),
+        ),
         backgroundColor: Colors.white,
         body:  _pageOptions[_selectedPage],
         bottomNavigationBar: BottomNavigationBar(
@@ -67,11 +80,7 @@ class MyAppState extends State<MyApp> {
             ),
           ],
         ),
-        floatingActionButton: new FloatingActionButton(
-          onPressed: (){},
-          backgroundColor: Colors.black,
-          child: new Icon(Icons.add),
-          ),
+        
       ),
     );
   }
