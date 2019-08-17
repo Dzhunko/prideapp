@@ -10,8 +10,12 @@ class ToDayPage extends StatefulWidget {
 class ToDayPageState extends State<ToDayPage>{
   @override
   Widget build (BuildContext context){
-    Scaffold(
-      body: TodoScreen(),
+    return Scaffold(
+      body: new Container(
+        padding: EdgeInsets.all(25.0),
+        child: Text('Today tasks', style: TextStyle(fontSize: 36.0),),
+      ),
+      //TodoScreen(),
       floatingActionButton: new FloatingActionButton(
         tooltip: 'Add Item',
         onPressed: _showFormDialog,
@@ -22,5 +26,19 @@ class ToDayPageState extends State<ToDayPage>{
             }
           
             void _showFormDialog() {
-  }
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
+                context: context, 
+                builder: (context) {
+                return Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: TextField(
+                      autofocus: true,
+                    ),
+                  ),
+                );
+              }
+              );
+             }
 }

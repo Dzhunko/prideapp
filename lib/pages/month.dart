@@ -9,8 +9,8 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarPageState extends StatelessWidget {
   @override
   Widget build (BuildContext context){
-    Scaffold(
-      body: Container(
+    return Scaffold(
+      body: new Container(
       padding: EdgeInsets.all(25.0),
       child: TableCalendar(
         startingDayOfWeek: StartingDayOfWeek.monday,
