@@ -31,14 +31,40 @@ class ToDayPageState extends State<ToDayPage>{
                 context: context, 
                 builder: (context) {
                 return Container(
-                  child: Padding(
+                  child: new Column(
+                    children: <Widget>[
+                      new  Padding(
                     padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: TextField(
                       autofocus: true,
-                    ),
-                  ),
+                      )
+                      
+                        ),
+                      new Row(children: <Widget>[
+                        new IconButton(
+                          icon: Icon(Icons.volume_up),
+                          color: Colors.black,
+                        ),
+                        new IconButton(
+                          icon: Icon(Icons.volume_up),
+                          color: Colors.red
+                        ),
+                        new IconButton(
+                          icon: Icon(Icons.volume_up),
+                          color: Colors.pink
+                        ),
+                        new IconButton(
+                          icon: Icon(Icons.volume_up),
+                          color: Colors.green
+                        )
+                        
+                      ]
+                  )   
+                    ]
+                      )
                 );
-              }
+                }
               );
+              
              }
 }
