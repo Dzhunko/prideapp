@@ -51,7 +51,7 @@ class ToDayPageState extends State<ToDayPage>{
                 context: context, 
                 builder: (context) {
                 return Container(
-                  height: 250,
+                  height: 200,
                   child: new Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -70,33 +70,38 @@ class ToDayPageState extends State<ToDayPage>{
                           children: <Widget>[
                             DecoratedTextField(),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 IconButton(
-                                  icon: ImageIcon(new AssetImage('images/creating_task_icon/undercell.png')),
+                                  icon: Icon(Icons.format_list_bulleted),
                                   color: Colors.black,
-                                  iconSize: 36.0,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
                                 ),
                                 IconButton(
-                                  icon: ImageIcon(new AssetImage('images/creating_task_icon/time.png')),
+                                  icon: Icon(Icons.access_time),
                                   color: Colors.black,
-                                  iconSize: 36.0,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
                                 ),
                                 IconButton(
-                                  icon: ImageIcon(new AssetImage('images/creating_task_icon/importance.png')),
+                                  onPressed: () {},
+                                  icon: Icon(Icons.pin_drop),
+                                  iconSize: 24.0,
                                   color: Colors.black,
-                                  iconSize: 36.0,
                                 ),
                                 IconButton(
-                                  icon: ImageIcon(new AssetImage('images/creating_task_icon/cycle.png')),
+                                  icon: Icon(Icons.refresh),
                                   color: Colors.black,
-                                  iconSize: 36.0,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
                                 ),
                                 IconButton(
                                   //icon: Icon(Icons.arrow_forward_ios),
-                                  icon: ImageIcon(new AssetImage('images/creating_task_icon/create_task.png')),
-                                  //color: Colors.amber[800],
-                                  iconSize: 36.0,
+                                  icon: Icon(Icons.arrow_forward_ios),
+                                  color: Colors.amber,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
                                 ),
                               ],
                             ),

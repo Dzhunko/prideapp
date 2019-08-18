@@ -5,6 +5,7 @@ import './pages/settings.dart';
 import 'package:date_utils/date_utils.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:bmnav/bmnav.dart' as bmnav;
 
 
 
@@ -25,6 +26,7 @@ class MyApp extends StatefulWidget {
   
 class MyAppState extends State<MyApp> {
   int _selectedPage = 0;
+  Widget currentScreen = ToDayPage();
   final _pageTitle=[
     'Today',
     'Month',
@@ -56,35 +58,23 @@ class MyAppState extends State<MyApp> {
         ),
         backgroundColor: Colors.white,
         body:  _pageOptions[_selectedPage],
-        bottomNavigationBar: BottomNavigationBar(
-          
-          currentIndex: _selectedPage,
-          selectedItemColor: Colors.amber[800],
-          
-          onTap: (int index){
+        bottomNavigationBar: bmnav.BottomNav(
+          index: _selectedPage,
+          onTap: (i) {
             setState(() {
-              _selectedPage = index;
-              
-            });
+              _selectedPage = i;
+              currentScreen = _pageOptions[i];
+                        });
           },
-          items: [
-            BottomNavigationBarItem(
-              icon: ImageIcon(new AssetImage('images/menu_icon/day.png')),
-              title: Container(height: 0.0),
-              
-              //icon: Icon(Icons.format_list_bulleted),
-              
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(new AssetImage('images/menu_icon/calendar.png')),
-              title: Container (height: 0.0)
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(new AssetImage('images/menu_icon/settings.png')),
-              title: Container(height: 0.0)
-            ),
-          ],
-        ),
+			     labelStyle: bmnav.LabelStyle(showOnSelect: true, onSelectTextStyle: TextStyle(color: Colors.amber)),
+           iconStyle: bmnav.IconStyle(onSelectSize: 36.0, color: Colors.black, onSelectColor: Colors.amber, size: 32.0),
+			items: [
+				bmnav.BottomNavItem(Icons.home, label: 'Home'),
+				bmnav.BottomNavItem(Icons.calendar_today, label: 'Calendar'),
+				bmnav.BottomNavItem(Icons.settings, label: 'Settings'),				
+			],
+		),
+	
         
       ),
     );
