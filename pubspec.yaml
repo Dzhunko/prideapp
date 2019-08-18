@@ -54,6 +54,11 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
+    - images/creating_task_icon/create_task.png
+    - images/creating_task_icon/cycle.png
+    - images/creating_task_icon/importance.png
+    - images/creating_task_icon/time.png
+    - images/creating_task_icon/undercell.png
     - images/menu_icon/day.png
     - images/menu_icon/calendar.png
     - images/menu_icon/settings.png
