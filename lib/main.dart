@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
+
 void main(){
   new MaterialApp(debugShowCheckedModeBanner: false,);
   initializeDateFormatting().then((_)=> runApp(MyApp()));
@@ -56,17 +57,21 @@ class MyAppState extends State<MyApp> {
         backgroundColor: Colors.white,
         body:  _pageOptions[_selectedPage],
         bottomNavigationBar: BottomNavigationBar(
+          
           currentIndex: _selectedPage,
           selectedItemColor: Colors.amber[800],
+          
           onTap: (int index){
             setState(() {
               _selectedPage = index;
+              
             });
           },
           items: [
             BottomNavigationBarItem(
               icon: ImageIcon(new AssetImage('images/menu_icon/day.png')),
-              title: Container(height: 0.0)
+              title: Container(height: 0.0),
+              
               //icon: Icon(Icons.format_list_bulleted),
               
             ),

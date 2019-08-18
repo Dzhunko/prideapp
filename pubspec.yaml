@@ -24,6 +24,7 @@ dependencies:
   intl: "^0.15.6" 
   flutter_calendar: ^0.0.8
   table_calendar: ^1.2.5
+  bmnav: ^0.3.4
   flutter:
     sdk: flutter
 
