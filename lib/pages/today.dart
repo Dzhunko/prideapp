@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:prideapp/ui/todo_screen.dart';
 
+class DecoratedTextField extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 50,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+            color: Colors.grey[300], borderRadius: BorderRadius.circular(10)),
+        child: TextField(
+          autofocus: true,
+          decoration: InputDecoration.collapsed(
+            hintText: 'What are we doing today?',
+          ),
+        ));
+  }
+}
+
 
 class ToDayPage extends StatefulWidget {
   @override
@@ -24,42 +43,71 @@ class ToDayPageState extends State<ToDayPage>{
                     ),
               );
             }
+
+
           
             void _showFormDialog() {
-              showModalBottomSheet(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
+              showBottomSheet(                
                 context: context, 
                 builder: (context) {
                 return Container(
+                  height: 200,
                   child: new Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      new  Padding(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: TextField(
-                      autofocus: true,
-                      )
-                      
+                      Container(
+                        height: 125,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          boxShadow: [
+                            BoxShadow (
+                              blurRadius: 10, color: Colors.grey[300], spreadRadius: 5),
+                          ]
                         ),
-                      new Row(children: <Widget>[
-                        new IconButton(
-                          icon: Icon(Icons.volume_up),
-                          color: Colors.black,
+                        child: Column(
+                          children: <Widget>[
+                            DecoratedTextField(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.format_list_bulleted),
+                                  color: Colors.black,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.access_time),
+                                  color: Colors.black,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.pin_drop),
+                                  iconSize: 24.0,
+                                  color: Colors.black,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.refresh),
+                                  color: Colors.black,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  //icon: Icon(Icons.arrow_forward_ios),
+                                  icon: Icon(Icons.arrow_forward_ios),
+                                  color: Colors.amber,
+                                  iconSize: 24.0,
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        new IconButton(
-                          icon: Icon(Icons.volume_up),
-                          color: Colors.red
-                        ),
-                        new IconButton(
-                          icon: Icon(Icons.volume_up),
-                          color: Colors.pink
-                        ),
-                        new IconButton(
-                          icon: Icon(Icons.volume_up),
-                          color: Colors.green
-                        )
-                        
-                      ]
-                  )   
+                      ),             
                     ]
                       )
                 );
