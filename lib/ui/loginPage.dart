@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:prideapp/pages/today.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,6 +14,72 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  SharedPreferences preferences ; 
+  bool loading = false;
+  bool isLogedin = false;
+  @override
+  void initState(){
+    super.initState();
+    isSignedIn();
+  }
+  void isSignedIn() async{
+   setState(() {
+     loading = true;
+   });
+
+   preferences = await SharedPreferences.getInstance();
+   isLogedin = await googleSignIn.isSignedIn();
+   if(isLogedin){
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ToDayPage()));
+   }
+
+   setState(() {
+     loading = false;
+
+   });
+  }
+
+  Future handleSignIn() async{
+ preferences = await SharedPreferences.getInstance();
+
+ setState(() {
+   loading = true;
+ });
+
+ GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+ GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+ FirebaseUser firebaseUser = await firebaseAuth.signInWithGoogle(idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+
+ if(firebaseUser != null){
+  final QuerySnapshot result = await FireStore.instance.collection("users").where("id", isEqualTo: firebaseUser.uid).getDocuments();
+  final List<DocumentSnapshot> documents = result.documents;
+  if(documents.length == 0){
+    FireStore.instance.collection("users").dociment(firebaseUser.uid).setData({
+      "id": firebaseUser.uid,
+      "username": firebaseUser.displayName,
+      "profilePicture": firebaseUser.photoUrl
+    });
+    await preferences.setString("id", firebaseUser.uid);
+    await preferences.setString("username", firebaseUser.displayName);
+    await preferences.setString("photoPicture", firebaseUser.displayName);
+  }
+  else{
+    await preferences.setString("id", documents[0]['id']);
+    await preferences.setString("username", documents[0]['username']);
+    await preferences.setString("photoPicture", documents[0]['photoUrl']);
+  }
+  Fluttertoast.showToast(msg:"Login was successful");
+  setState(() {
+    loading = false;
+  });
+  
+ }
+ else{
+
+ }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,128 +94,32 @@ class _LoginPageState extends State<LoginPage> {
         // leading: Text(""),
         centerTitle: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          decoration: BoxDecoration(
-            // Box decoration takes a gradient
-            gradient: LinearGradient(
-              // Where the linear gradient begins and ends
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              // Add one stop for each color. Stops should increase from 0 to 1
-              stops: [0.1, 0.5, 0.7, 0.9],
-              colors: [
-                // Colors are easy thanks to Flutter's Colors class.
-                Colors.red[500],
-                Colors.red[400],
-                Colors.red[300],
-                Colors.red[200],
-              ],
-            ),
+      body: Stack(
+      children: <Widget>[
+        Center(
+          child: FlatButton(
+            color: Colors.black,
+            onPressed: (){
+             handleSignIn();
+             child: Text("Sign in / Sign up with google", style: TextStyle(color: Colors.white));
+            },
           ),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
+          ),
+          Visibility(
+            visible: loading ?? true,
+            child: Container(
+              color: Colors.white.withOpacity(0.7),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+               ),
+              )
+              )
 
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'images/icon.png',
-                    height: 100.0,
-                    width: 100.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: "Enter Your Email",
-                      ),
-                      validator: (val) {
-                        if (val.isEmpty) {
-                          return "Please provide a valid Email ID";
-                        }
-                      },
-                      onSaved: (val) {
-                        _email = val;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Enter Your Password",
-                      ),
-                      validator: (val) {
-                        if (val.length < 6) {
-                          return "Password atleast have 6 characters";
-                        }
-                      },
-                      onSaved: (val) {
-                        _password = val;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  RaisedButton(
-                    elevation: 6.0,
-                    color: Color(0xFFF44336),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                    ),
-                    child: Text(
-                      "Login",
-                      style: TextStyle(fontSize: 22.0, color: Colors.white),
-                    ),
-                    onPressed: () {
-                      signIn();
-                    },
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Center(
-                      child: Text("Don't have an account ?",
-                          style: TextStyle(fontSize: 16.0))),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  RaisedButton(
-                    color: Color(0xFFF44336),
-                    elevation: 6.0,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                    ),
-                    child: Text(
-                      "Login as Guest",
-                      style: TextStyle(fontSize: 22.0, color: Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/todoscreen');
-                    },
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      ],
+                  
+      )
     );
+             
   }
 
   Future<void> signIn() async {
@@ -159,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
           .then((FirebaseUser user) {
         print(user.email);
         Navigator.of(context).pop();
-        // Removing the back button in appbar(removing the todoscreen page from the stack when we click the logout button therefore user can't go back )
+        
         Navigator.of(context).pushReplacementNamed('/todoscreen');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => ToDayPage()));
