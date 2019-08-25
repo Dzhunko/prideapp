@@ -19,6 +19,12 @@ environment:
 
 
 dependencies:
+  google_sign_in: ^4.0.6
+  firebase_auth: ^0.14.0+3
+  cloud_firestore: ^0.12.9+1
+  shared_preferences: ^0.5.3+4
+  fluttertoast: ^3.1.0
+  flutter_auth_buttons: ^0.5.0
   sqflite: ">=0.8.5"
   path_provider: any 
   intl: "^0.15.6" 
@@ -27,7 +33,6 @@ dependencies:
   bmnav: ^0.3.4
   flutter:
     sdk: flutter
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
