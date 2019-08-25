@@ -18,6 +18,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'homePage.dart';
+
 void main() {
   new MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -55,7 +57,7 @@ class SignInState extends State<SignIn> {
     isLogged = await _googleSignIn.isSignedIn();
     if (isLoading) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SettingsPageState()));
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
 
     setState(() {
@@ -63,7 +65,7 @@ class SignInState extends State<SignIn> {
     });
   }
 
-  Future<Null> handleSignIn() async {
+  Future<FirebaseUser> handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
@@ -106,7 +108,7 @@ class SignInState extends State<SignIn> {
       setState(() {
               isLoading = false;
             });
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPageState()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
     }
     else {
       Fluttertoast.showToast(
@@ -116,10 +118,35 @@ class SignInState extends State<SignIn> {
               isLoading = false;
             });
     }
+    return firebaseUser;
   }
 
   @override
-  Widget build(BuildContext context) {}
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: <Widget> [
+          Center(
+            child: GoogleSignInButton(
+              onPressed: handleSignIn,
+            ),
+            ),
+            Positioned(
+              child: Center(
+                              child: isLoading ?
+                Container(child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                ),
+                color: Colors.white.withOpacity(0.8),
+                ):
+                Container(),
+              ),
+
+            )
+        ]
+      )
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -130,19 +157,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  int _selectedPage = 0;
-  Widget currentScreen = ToDayPage();
-  final _pageTitle = [
-    'Today',
-    'Month',
-    'Settings',
-  ];
-  final _pageOptions = [
-    //ToDayPageState(),
-    ToDayPage(),
-    CalendarPageState(),
-    SettingsPageState(),
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -152,40 +167,7 @@ class MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          title: Text(_pageTitle[_selectedPage]),
-          backgroundColor: Colors.white,
-        ),
-        drawer: Drawer(
-          child: ListView(),
-        ),
-        backgroundColor: Colors.white,
-        body: _pageOptions[_selectedPage],
-        bottomNavigationBar: bmnav.BottomNav(
-          index: _selectedPage,
-          onTap: (i) {
-            setState(() {
-              _selectedPage = i;
-              currentScreen = _pageOptions[i];
-            });
-          },
-          labelStyle: bmnav.LabelStyle(
-              showOnSelect: true,
-              onSelectTextStyle: TextStyle(color: Colors.amber)),
-          iconStyle: bmnav.IconStyle(
-              onSelectSize: 36.0,
-              color: Colors.black,
-              onSelectColor: Colors.amber,
-              size: 32.0),
-          items: [
-            bmnav.BottomNavItem(Icons.home, label: 'Home'),
-            bmnav.BottomNavItem(Icons.calendar_today, label: 'Calendar'),
-            bmnav.BottomNavItem(Icons.settings, label: 'Settings'),
-          ],
-        ),
-      ),
+      home: SignIn(),
     );
   }
 }
