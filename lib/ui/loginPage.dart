@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
   final QuerySnapshot result = await Firestore.instance.collection("users").where("id", isEqualTo: firebaseUser.uid).getDocuments();
   final List<DocumentSnapshot> documents = result.documents;
   if(documents.length == 0){
-    Firestore.instance.collection("users").dociment(firebaseUser.uid).setData({
+    Firestore.instance.collection("users").document(firebaseUser.uid).setData({
       "id": firebaseUser.uid,
       "username": firebaseUser.displayName,
       "profilePicture": firebaseUser.photoUrl

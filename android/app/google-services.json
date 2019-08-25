@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "740960406078",
+    "firebase_url": "https://pride-493bd.firebaseio.com",
+    "project_id": "pride-493bd",
+    "storage_bucket": "pride-493bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740960406078:android:df3faebeed0a448b",
+        "android_client_info": {
+          "package_name": "com.prideinc.pride"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740960406078-ifrn7ndmjttsn5rdtv4eceg64i2mn8dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACYsMHrUbP2uQ2w3WC6LSgxyH8lnBbdE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740960406078-ifrn7ndmjttsn5rdtv4eceg64i2mn8dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

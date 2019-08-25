@@ -95,5 +95,11 @@ void main(){
       home: LoginPage(),);
   initializeDateFormatting().then((_)=> runApp(HomePage()));
   
-} 
+}
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return null;
+  } 
 }
