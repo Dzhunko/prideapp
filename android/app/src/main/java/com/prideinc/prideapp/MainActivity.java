@@ -1,4 +1,4 @@
-package com.example.prideapp;
+package com.prideinc.prideapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
