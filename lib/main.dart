@@ -167,7 +167,7 @@ class MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
       ),
-      home: SignIn(),
+      home: HomePage(),
     );
   }
 }
