@@ -1,122 +1,125 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-//Pages
-import './pages/home.dart';
-import './pages/month.dart';
-import './pages/settings.dart';
-
-import 'package:date_utils/date_utils.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:bmnav/bmnav.dart' as bmnav;
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 //Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//Shared prefrences & Flutter Toast
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+//Button
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 import 'homePage.dart';
 
-void main() {
-  new MaterialApp(
-    debugShowCheckedModeBanner: false,
-  );
-  initializeDateFormatting().then((_) => runApp(MyApp()));
-}
+void main() => runApp(MyApp());
 
-class SignIn extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  SignInState createState() => SignInState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: SignDemo(),
+    );
+  }
 }
 
-class SignInState extends State<SignIn> {
+class SignDemo extends StatefulWidget {
+  @override
+  _SignDemoState createState() => _SignDemoState();
+}
+
+class _SignDemoState extends State<SignDemo> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  bool isLoading = false;
-  bool isLogged = false;
-
   SharedPreferences prefs;
+
+  bool isLoading = false;
+  bool isLoggedIn = false;
   FirebaseUser currentUser;
 
   @override
   void initState() {
     super.initState();
-    isSignIn();
+    isSignedIn();
   }
 
-  void isSignIn() async {
-    setState(() {
+  void isSignedIn() async {
+    this.setState(() {
       isLoading = true;
     });
+
     prefs = await SharedPreferences.getInstance();
 
-    isLogged = await _googleSignIn.isSignedIn();
-    if (isLoading) {
-      Navigator.pushReplacement(
+    isLoggedIn = await _googleSignIn.isSignedIn();
+    if (isLoggedIn) {
+      Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomePage()));
     }
 
-    setState(() {
+    this.setState(() {
       isLoading = false;
     });
   }
 
-  Future<FirebaseUser> handleSignIn() async {
+  Future<FirebaseUser> _handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+
     final FirebaseUser firebaseUser =
         (await firebaseAuth.signInWithCredential(credential)).user;
+    print("signed in " + firebaseUser.displayName);
 
     if (firebaseUser != null) {
+      // Check is already sign up
       final QuerySnapshot result = await Firestore.instance
-          .collection('user')
+          .collection('users')
           .where('id', isEqualTo: firebaseUser.uid)
           .getDocuments();
-
-      List<DocumentSnapshot> documents = result.documents;
-      if(documents.length == 0) {
-        Firestore.instance.collection('user').document(firebaseUser.uid).setData({
+      final List<DocumentSnapshot> documents = result.documents;
+      if (documents.length == 0) {
+        // Update data to server if new user
+        Firestore.instance
+            .collection('users')
+            .document(firebaseUser.uid)
+            .setData({
           'id': firebaseUser.uid,
-          'username': firebaseUser.displayName,
-          'photoUrl': firebaseUser.photoUrl
+          'nickname': firebaseUser.displayName,
+          'photoUrl': firebaseUser.photoUrl,
+          'createdAt': DateTime.now().millisecondsSinceEpoch.toString(),
         });
 
-        //Data to local
+        // Write data to local
         currentUser = firebaseUser;
         await prefs.setString('id', currentUser.uid);
-        await prefs.setString('username', currentUser.displayName);
+        await prefs.setString('nickname', currentUser.displayName);
         await prefs.setString('photoUrl', currentUser.photoUrl);
-      }
-      else {
+      } else {
+        // Write data to local
         await prefs.setString('id', documents[0]['id']);
-        await prefs.setString('username', documents[0]['username']);
+        await prefs.setString('nickname', documents[0]['nickname']);
         await prefs.setString('photoUrl', documents[0]['photoUrl']);
       }
-      Fluttertoast.showToast(
-        msg: "Sign in success"
-      );
-      setState(() {
-              isLoading = false;
-            });
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
-    }
-    else {
-      Fluttertoast.showToast(
-        msg: "Sign in fail"
-      );
-      setState(() {
-              isLoading = false;
-            });
+      Fluttertoast.showToast(msg: "Sign in success");
+      this.setState(() {
+        isLoading = false;
+      });
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    } else {
+      Fluttertoast.showToast(msg: "Sign in fail");
+      this.setState(() {
+        isLoading = false;
+      });
     }
     return firebaseUser;
   }
@@ -124,50 +127,28 @@ class SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget> [
-          Center(
-            child: GoogleSignInButton(
-              onPressed: handleSignIn,
-            ),
-            ),
-            Positioned(
-              child: Center(
-                              child: isLoading ?
-                Container(child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                ),
-                color: Colors.white.withOpacity(0.8),
-                ):
-                Container(),
-              ),
+        body: Stack(
+      children: <Widget>[
+        Center(
+          child: GoogleSignInButton(
+            onPressed: _handleSignIn,
+          ),
+        ),
 
-            )
-        ]
-      )
-    );
-  }
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return MyAppState();
-  }
-}
-
-class MyAppState extends State<MyApp> {
-  
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pride',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryTextTheme: TextTheme(title: TextStyle(color: Colors.black)),
-      ),
-      home: HomePage(),
-    );
+        // Loading
+        Positioned(
+          child: isLoading
+              ? Container(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                    ),
+                  ),
+                  color: Colors.white.withOpacity(0.8),
+                )
+              : Container(),
+        ),
+      ],
+    ));
   }
 }
