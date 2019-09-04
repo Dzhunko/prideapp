@@ -73,6 +73,7 @@ class ToDayPageState extends State<ToDayPage>{
                              onChanged: (String str){
                                setState(() {
                                 result = str; 
+                                // вот текст, введенный с клавы
                                });
                              }
                             ),
@@ -117,6 +118,7 @@ class ToDayPageState extends State<ToDayPage>{
                                   iconSize: 24.0,
                                   onPressed: () {
                                     new Text(result);
+                                    //здесь мы его сохраняем
                                   },
                                 ),
                               ],
