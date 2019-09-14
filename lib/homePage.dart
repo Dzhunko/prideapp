@@ -35,9 +35,8 @@ class HomePageState extends State<HomePage> {
     setState(() {
       isLoading = false;
     });
-   Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MyApp()),
-        (Route<dynamic> route) => false);
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=> MyApp()),
+    (Route<dynamic> route)=> false);
   }
   final _pageTitle = [
     'Today',
