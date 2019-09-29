@@ -27,6 +27,7 @@ class ToDayPage extends StatefulWidget {
 }
 
 class ToDayPageState extends State<ToDayPage>{
+  String result = "";
   @override
   Widget build (BuildContext context){
     return Scaffold(
@@ -68,7 +69,14 @@ class ToDayPageState extends State<ToDayPage>{
                         ),
                         child: Column(
                           children: <Widget>[
-                            DecoratedTextField(),
+                             new TextField(
+                             onChanged: (String str){
+                               setState(() {
+                                result = str; 
+                                // вот текст, введенный с клавы
+                               });
+                             }
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
@@ -102,6 +110,16 @@ class ToDayPageState extends State<ToDayPage>{
                                   color: Colors.amber,
                                   iconSize: 24.0,
                                   onPressed: () {},
+                                ),
+                                IconButton(
+                                  //icon: Icon(Icons.arrow_forward_ios),
+                                  icon: Icon(Icons.arrow_forward_ios),
+                                  color: Colors.amber,
+                                  iconSize: 24.0,
+                                  onPressed: () {
+                                    new Text(result);
+                                    //здесь мы его сохраняем
+                                  },
                                 ),
                               ],
                             ),
