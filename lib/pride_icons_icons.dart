@@ -19,3 +19,5 @@ class PrideIcons {
   static const IconData ic_2 = const IconData(0xe801, fontFamily: _kFontFam);
   static const IconData ic_3 = const IconData(0xe802, fontFamily: _kFontFam);
 }
+
+

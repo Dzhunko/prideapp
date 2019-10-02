@@ -70,25 +70,19 @@ with SingleTickerProviderStateMixin{
                 return Container(
                   child: Dismissible(
                     resizeDuration: Duration(milliseconds: 1000),
-                    secondaryBackground: Container(
+                    secondaryBackground: Card( //Поменял контейнер на Карту
                       elevation: 6.0,
                       shape: BeveledRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0)),
                       child: Icon(Icons.check),
                     ),
-                    background: Container(
+                    background: Card(  //Поменял контейнер на карточку
                       elevation: 6.0,
 
                       // shape: BeveledRectangleBorder(
                       //     borderRadius: BorderRadius.circular(50.0)),
                       child: Icon(Icons.cancel),
-                      ),
-                    ),
-                    key: Key(Firestore.instance
-                        .collection('users')
-                        .document()
-                        .documentID),
-                    child: Padding(
+                      ), child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Card(
                         shape: BeveledRectangleBorder(
@@ -126,13 +120,17 @@ with SingleTickerProviderStateMixin{
                                         .collection('todos')
                                         .document(ds.documentID)
                                         .delete();
-                              ),
+                                  }),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ), 
+                    key: Key(Firestore.instance
+                        .collection('users')
+                        .document()
+                        .documentID),
                     onDismissed: (direction) {
                       print("${ds['task']} is deleted");
                       Firestore.instance
@@ -141,27 +139,37 @@ with SingleTickerProviderStateMixin{
                           .delete();
                   
                     // Working on 
-                    }
-            )
-                )
-              }
+                    } 
+                    ),
+                    /*key: Key(Firestore.instance
+                        .collection('users')
+                        .document()
+                        .documentID),*/ 
+                    
             );
-          }
-        }
-      ),
-      //TodoScreen(),
+              });
+                }
+              }
+            ),
       floatingActionButton: new FloatingActionButton(
         tooltip: 'Add Item',
         onPressed: _showFormDialog,
         backgroundColor: Colors.black,
         child: new Icon(Icons.add),
                     ),
-              );
-            }
+            );
+          }
+        
+      
+      //TodoScreen(),
+      
+              
+            
 
 
           
             void _showFormDialog() {
+              var context;
               showBottomSheet(                
                 context: context, 
                 builder: (context) {
@@ -229,9 +237,9 @@ with SingleTickerProviderStateMixin{
                                 FlatButton(
                                   //icon: Icon(Icons.arrow_forward_ios),
                                   child: Text('save'),
-                                  icon: Icon(Icons.arrow_forward_ios),
+                                  
                                   color: Colors.amber,
-                                  iconSize: 24.0,
+                                  
                                   onPressed: (){
                                     if (_formkey.currentState.validate()){
                                       _handleSubmit();
@@ -250,8 +258,10 @@ with SingleTickerProviderStateMixin{
                 }
               );
               showDialog(
-        context: context, builder: (_) => alert, barrierDismissible: false);
+        context: context, builder: (_) => alert(), barrierDismissible: false);
              }
+
+            alert() => alert;
               void _handleSubmit() {
     if (Firestore.instance.collection('todos').document() == null) {
       Firestore.instance.collection('todos').document().setData({"task": ""});
@@ -265,6 +275,7 @@ with SingleTickerProviderStateMixin{
   }
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut().then((val) {
+      BuildContext context;
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/');
     }).catchError((e) {
@@ -272,5 +283,6 @@ with SingleTickerProviderStateMixin{
     });
   }
 
-}
+
             
+}
