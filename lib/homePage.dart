@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './pages/home.dart';
 import './pages/month.dart';
 import './pages/settings.dart';
+import './pages/savingText.dart';
 
 //Firebase
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,7 +46,7 @@ class HomePageState extends State<HomePage> {
   ];
   final _pageOptions = [
     //ToDayPageState(),
-    ToDayPage(),
+    TodoScreen(),
     CalendarPageState(),
     SettingsPageState(),
   ];
