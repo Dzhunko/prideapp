@@ -33,7 +33,7 @@ class ToDayPageState extends State<ToDayPage>{
     return Scaffold(
       body: new Container(
         padding: EdgeInsets.all(25.0),
-        child: Text('Today tasks', style: TextStyle(fontSize: 36.0),),
+        child: Text('Peredelivai', style: TextStyle(fontSize: 36.0),),
       ),
       //TodoScreen(),
       floatingActionButton: new FloatingActionButton(
@@ -104,13 +104,7 @@ class ToDayPageState extends State<ToDayPage>{
                                   iconSize: 24.0,
                                   onPressed: () {},
                                 ),
-                                IconButton(
-                                  //icon: Icon(Icons.arrow_forward_ios),
-                                  icon: Icon(Icons.arrow_forward_ios),
-                                  color: Colors.amber,
-                                  iconSize: 24.0,
-                                  onPressed: () {},
-                                ),
+                                
                                 IconButton(
                                   //icon: Icon(Icons.arrow_forward_ios),
                                   icon: Icon(Icons.arrow_forward_ios),

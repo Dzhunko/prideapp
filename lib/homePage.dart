@@ -39,9 +39,9 @@ class HomePageState extends State<HomePage> {
     (Route<dynamic> route)=> false);
   }
   final _pageTitle = [
-    'Today',
-    'Month',
-    'Settings',
+    'Home',
+    'Projects',
+    'Profile',
   ];
   final _pageOptions = [
     //ToDayPageState(),
@@ -84,8 +84,8 @@ class HomePageState extends State<HomePage> {
               size: 32.0),
           items: [
             bmnav.BottomNavItem(Icons.home, label: 'Home'),
-            bmnav.BottomNavItem(Icons.calendar_today, label: 'Calendar'),
-            bmnav.BottomNavItem(Icons.settings, label: 'Settings'),
+            bmnav.BottomNavItem(Icons.class_, label: 'Projects'),
+            bmnav.BottomNavItem(Icons.account_circle, label: 'Profile'),
           ],
         ),
     );
