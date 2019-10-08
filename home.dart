@@ -33,19 +33,7 @@ class ToDayPageState extends State<ToDayPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 5.0,
-        leading: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: GestureDetector(
-            onTap: () {
-              print("Icon Tapped!!!!");
-            },
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
+     
       body: StreamBuilder(
         stream: _cloudFirestore,
         builder: (context, snapshot) {
@@ -63,12 +51,10 @@ class ToDayPageState extends State<ToDayPage>
                   child: Dismissible(
                     resizeDuration: Duration(milliseconds: 1000),
                     secondaryBackground: Card(
-                      elevation: 6.0,
-                      shape: BeveledRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0)),
+                      
                       child: Container(
                         // color: Colors.black26,
-                        padding: EdgeInsets.all(18.0),
+                        
                         alignment: Alignment.centerRight,
                         child: IconButton(
                           onPressed: () {},
@@ -78,17 +64,18 @@ class ToDayPageState extends State<ToDayPage>
                       ),
                     ),
                     background: Card(
-                      elevation: 6.0,
+                      
 
                       // shape: BeveledRectangleBorder(
                       //     borderRadius: BorderRadius.circular(50.0)),
                       child: Container(
                         // color: Colors.black26,
-                        padding: EdgeInsets.all(18.0),
+                        
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Delete",
-                          style: TextStyle(fontSize: 20.0),
+                        child: IconButton(
+                          onPressed: () {},
+                          color: Colors.redAccent,
+                          icon: Icon(Icons.delete),
                         ),
                       ),
                     ),
@@ -99,9 +86,7 @@ class ToDayPageState extends State<ToDayPage>
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Card(
-                        shape: BeveledRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0)),
-                        elevation: 6.0,
+                        
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
@@ -113,29 +98,11 @@ class ToDayPageState extends State<ToDayPage>
                                       .collection('todos')
                                       .document());
                                 },
-                                leading: CircleAvatar(
-                                  child: Text(
-                                    ds['task'][0].toString().toUpperCase(),
-                                    style: TextStyle(
-                                        fontSize: 24.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
                                 title: Text(
                                   ds['task'].toString(),
                                   style: TextStyle(),
                                 ),
-                                trailing: IconButton(
-                                  color: Colors.redAccent,
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    print("${ds['task']} is deleted");
-                                    Firestore.instance
-                                        .collection('todos')
-                                        .document(ds.documentID)
-                                        .delete();
-                                  },
-                                ),
+                                
                               ),
                             ),
                           ),
@@ -186,16 +153,14 @@ class ToDayPageState extends State<ToDayPage>
     showBottomSheet(
         context: context,
         builder: (context) {
-          return Container(
+          return Form(
             key: _formkey,
-              height: 200,
               child: new Column(
-               
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      
+                       
                         height: 125,
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -207,12 +172,15 @@ class ToDayPageState extends State<ToDayPage>
                                   color: Colors.grey[300],
                                   spreadRadius: 5),
                             ]),
-                        
-                        child: Column(
-                         
-                          children: <Widget>[
-                           TextFormField(controller: _textController),
-                          ])),
+                        child: ListTile(
+                            title: TextFormField(
+                                controller: _textController,
+                                validator: (val) {
+                                  if (val.isEmpty) {
+                                    return 'please enter something';
+                                  }
+                                  return null;
+                                }))),
                     Row(children: <Widget>[
                       IconButton(
                         icon: Icon(Icons.format_list_bulleted),
@@ -241,21 +209,20 @@ class ToDayPageState extends State<ToDayPage>
                         },
                       ),
                       FlatButton(
-                        child: Text("Save"),
-                        onPressed: () {
-                          if (_formkey.currentState.validate()) {
-                            _handleSubmit();
+              child: Text("Save"),
+              onPressed: () {
+                if (_formkey.currentState.validate()) {
+                  _handleSubmit();
 
-                            _textController.clear();
+                  _textController.clear();
 
-                            Navigator.of(context).pop();
-                          }
-                        },
-                      )
-                    ])
-                    
-                    ]
-          ));
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+                    ]),
+                  ]));
+          
         });
   }
 
